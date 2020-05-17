@@ -1,0 +1,54 @@
+from Tkinter import *
+
+
+#The Fractal superclass
+class Fractal(object):
+    def __init__(self, dimensions):
+        # the canvas dimensions
+        self.dimensions = {min_x: 5, max_x: WIDTH-5, mid_x: (min_x+max_x)/2, min_y: 5, max_y: HEIGHT-5, mid_y: (min_y+max_y)/2}
+        # the default number of points to plot is 50,000
+        self.num_points = 50000
+        # the default distance ratio is 0.5 (halfway)
+        self.r = 0.5
+        self.vertices = [Point(0,0)]
+
+    def frac_x(self, r):
+        return int((self.dimensions["max_x"] - \
+                    self.dimensions["min_x"]) * r) + \
+                    self.dimensions["min_x"]
+
+
+    def frac_y(self, r):
+        return int((self.dimensions["max_y"] - \
+                    self.dimensions["min_y"]) * r) + \
+                    self.dimensions["min_y"]
+
+
+
+#Fractal subclasses
+class SierpinskiTriangle(Fractal):
+
+    def __init__(self, dimensions):
+        Fractal.__init__(self, dimensions)
+        self.vetices = [Point(self.dimensions[mid_x],self.dimensions[min_y]), Point(self.dimensions[min_x], self.dimensions[max_y]),\
+                        Point(self.dimensions[max_x], self.dimensions[max_y])]
+
+class SierpinskiCarpet(Fractal):
+
+    def __init__(self, dimensions):
+        Fractal.__init__(self, dimensions)
+        self.num_points = 100000
+        self.r = 0.66
+        self.vertices = [Point(self.dimensions[min_x],self.dimensions[min_y]), Point(self.dimensions[mid_x],self.dimensions[min_y]),\
+                         Point(self.dimensions[max_x],self.dimensions[min_y]), Point(self.dimensions[min_x],self.dimensions[mid_y]),\
+                         Point(self.dimensions[max_x],self.dimensions[mid_y]), Point(self.dimensions[min_x],self.dimensions[max_y]),\
+                         Point(self.dimensions[mid_x],self.dimensions[max_y]), Point(self.dimensions[max_x],self.dimensions[max_y])]
+
+class Hexagon(Fractal):
+
+    def __init__(self, dimensions):
+        Fractal.__init__(self, dimensions)
+        self.r = 0.665
+        self.vertices = [Point(self.dimensions[mid_x],self.dimensions[min_y]), Point(self.dimensions[min_x],frac_y(0.25)),\
+                         Point(self.dimensions[max_x],frac_y(0.25)), Point(self.dimensions[min_x],frac_y(0.75)), Point(self.dimensions[max_x],frac_y(0.75)),\
+                         Point(self.dimensions[mid_x],self.dimensions[max_y])]
